@@ -1,0 +1,49 @@
+1. Open firewall configuration tool (Windows Firewall or terminal for UFW)
+
+On Linux systems, UFW (Uncomplicated Firewall) is a simple command-line tool to manage firewall rules.
+We use the terminal to execute commands that configure and manage the firewall.
+
+2. List current firewall rules
+
+Command:
+--> sudo ufw status numbered
+This shows all the firewall rules currently active, along with their rule numbers for easy deletion or modification. The numbered option displays each rule with an index.
+
+3. Add a rule to block inbound traffic on a specific port (e.g., 23 for Telnet)
+Command:
+
+--> sudo ufw deny 23/tcp
+This blocks all TCP traffic coming to port 23, which is the Telnet service port. Telnet is insecure, so it’s commonly blocked in secure environments.
+
+4. Test the rule by attempting to connect to that port locally or remotely
+You can use tools like nmap to scan and verify the port’s status.
+Example:
+
+--> nmap --open <your_ip>
+If the firewall rule works, port 23 should show as closed or filtered.
+
+5. Add rule to allow SSH (port 22) if on Linux
+Command:
+
+--> sudo ufw allow 22/tcp
+This allows inbound TCP connections to port 22, which is used for SSH. This ensures remote login via SSH is still possible while blocking unsafe ports.
+
+6. Remove the test block rule to restore original state
+If the testing is complete and you want to revert changes, use:
+
+--> sudo ufw status numbered
+sudo ufw delete <rule_number>
+This deletes a specific firewall rule using its index number from the list.
+
+------ Summarize how firewall filters traffic ---------
+
+A firewall works by applying rules to incoming and outgoing network traffic.
+
+Allow rules: Permit traffic that matches the criteria.
+
+Deny rules: Block traffic that matches the criteria.
+
+Rules can be based on port number, protocol, source IP, or destination IP.
+
+In this setup, we allowed SSH (port 22) and denied Telnet (port 23) to improve system security.
+
